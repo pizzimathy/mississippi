@@ -42,7 +42,7 @@ for plan in ensemble:
             interesting.append((plan, representation))
             break
 
-    # If more than three districts have a >41% black population, save it, too.
+    # If more than three districts have a >38% black population, save it, too.
     count = 0
     for district in representation:
         if district > 0.38:
