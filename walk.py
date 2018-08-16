@@ -13,7 +13,7 @@ with open("./data/graph_data.json", "r") as f:
     graph = adjacency_graph(json.loads(f.read()))
 
 # Create an ensemble of districting plans.
-num_plans = 10
+num_plans = 1000
 delta = 0.1
 ensemble = [explore_random(graph, 1, 4, delta=delta)[0] for i in range(num_plans)]
 
@@ -32,31 +32,26 @@ for plan in ensemble:
         black = sum(list(nx.get_node_attributes(district, "BPOP").values()))
         representation.append(black / total)
 
-    """
-    # If more than two districts have a >60% black population, save it.
+    # If more than two districts have a >50% black population, save it.
     count = 0
     for district in representation:
-        if district > 0.6:
+        if district > 0.5:
             count += 1
 
         if count == 2:
-            interesting.append(plan)
+            interesting.append((plan, representation))
             break
 
     # If more than three districts have a >41% black population, save it, too.
     count = 0
     for district in representation:
-        if district > 0.41:
+        if district > 0.38:
             count += 1
 
         if count == 3:
-            interesting.append(plan)
+            interesting.append((plan, representation))
             break
-    """
     
-    # Just do this for now.
-    interesting.append((plan, representation))
-
 # Go through the interesting plans and make shapefiles of them.
 for index, pair in enumerate(interesting):
     # Load the shapefile.
@@ -77,12 +72,13 @@ for index, pair in enumerate(interesting):
             adj_df.loc[adj_df["GEOID"] == tract, "CD"] = assignment
             adj_df.loc[adj_df["GEOID"] == tract, "REP"] = representation[assignment]
         
+        # Increase the district assignment label.
         assignment += 1
 
     adj_df.to_file(f"./map_shapefiles/{index}.shp")
 
 # Get the faces of the plans!
-for i in range(len(interesting)):
+for i, info in enumerate(interesting):
     # Create a new HalfEdge data structure to find faces.
     he = HalfEdge(f"./map_shapefiles/{i}.shp")
 
@@ -109,5 +105,5 @@ for i in range(len(interesting)):
             plt.fill(x, y, "black", alpha=representation_percent.pop(), linewidth=1)
 
     plt.axis("off")
-    plt.savefig(f"./maps/{i}.svg", dpi=10000)
+    plt.savefig(f"./maps/{info[1]}.svg", dpi=100000)
     plt.close()
