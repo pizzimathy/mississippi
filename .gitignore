@@ -1,5 +1,11 @@
+
+### Annoying stuff ###
 __pycache__/
 .DS_Store
 .vscode/
 .python-version
+
+### Things that are super large and shouldn't be included ###
 spanning_trees/
+map_shapefiles/
+maps/

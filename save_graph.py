@@ -6,6 +6,11 @@ from networkx.readwrite import adjacency_data
 
 from make_graph import construct_graph_from_df
 
+"""
+Takes in data from a shapefile, generates a dual graph, and shoves data into the
+graph for later use by the tree walk.
+"""
+
 # Generate a simple rook adjacency graph augmented with centroids.
 tracts = gpd.read_file("./data/tl_2016_28_tract_merged/tl_2016_28_tract_merged.shp")
 

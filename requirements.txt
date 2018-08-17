@@ -1,0 +1,10 @@
+networkx
+geopandas
+numpy
+pysal
+matplotlib
+pandas
+autographs
+shapely
+us
+census

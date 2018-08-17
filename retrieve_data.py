@@ -6,6 +6,14 @@ import pandas as pd
 import geopandas as gpd
 import json
 
+"""
+Retrieves data from the Census API that can be found here:
+
+    https://github.com/datamade/census
+
+Assigns the data to the corresponding shapefile, then outputs the shapefile.
+"""
+
 # Initialize the census api with the incredibly long api key.
 cen = Census("599374066b9d48c54cbb2aa7738a4823f015a3bc")
 
