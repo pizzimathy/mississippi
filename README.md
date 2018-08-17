@@ -5,6 +5,10 @@ A short set of scripts that make pretty maps of Mississippi.
 Clone this repository, then just run `$ make`. Everything will be set up for you,
 so you'll be all set to use the code right away.
 
+## Examples
+To see visual examples of the maps generated _without_ having to go through
+the below steps, the `packs/` directory has zipped example maps.
+
 ## Usage
 Most of these scripts are auxiliary and perform a specific set of tasks; this
 task is denoted in a block comment at the top of each script. The only script
