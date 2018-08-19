@@ -16,8 +16,8 @@ corresponding shapefile. Then, it generates face-colored maps as svgs.
 """
 
 # Default values for finding plans.
-num_plans = 1000
-delta = 0.2
+num_plans = 200
+delta = 0.25
 
 # Paths to files.
 graph_path = "./data/MS_geodata_geopos.json"
