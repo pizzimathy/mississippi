@@ -16,8 +16,8 @@ corresponding shapefile. Then, it generates face-colored maps as svgs.
 """
 
 # Default values for finding plans.
-num_plans = 200
-delta = 0.25
+num_plans = 1
+delta = 0.2
 
 # Paths to files.
 graph_path = "./data/MS_geodata_geopos.json"
@@ -69,7 +69,7 @@ for plan in ensemble:
             break
 
     # Do this when testing.
-    # interesting.append((plan, representation))
+    interesting.append((plan, representation))
     
 # Go through the interesting plans and make shapefiles of them.
 for index, pair in enumerate(interesting):
@@ -130,6 +130,9 @@ for i, info in enumerate(interesting):
     
     # Pick a color scheme.
     color_map = color_maps[randint(0, 2)]
+    
+    # Initialize a variable to count the number of big faces.
+    count = 0
 
     for face in he.faces:
         # Get list(s) of the bounding centroids' coordinates.
@@ -142,13 +145,27 @@ for i, info in enumerate(interesting):
         # Go over the edges and add representation stuff.
         for edge in face:
             head = edge.head
-            index = head.label
-            cds.add(df["CD"][index])
+            tail = edge.tail
+            cds.add(df["CD"][head.label])
+
+            # Check whether the edge connects vertices in the same district.
+            if df["CD"][head.label] == df["CD"][tail.label]:
+                color = color_map[df["CD"][head.label]]
+                plt.plot([head.x, tail.x], [head.y, tail.y], c=f"xkcd:{color}", linewidth=1)
+
+        cds = list(cds)
 
         # If the face is interior to the component, color it. Also, color its edges
         if len(cds) == 1:
-            plt.fill(x, y, c=f"xkcd:{color_map[cds.pop()]}", linewidth=2, edgecolor="w", closed=True)
+            cd = cds[0]
+            plt.fill(x, y, c=f"xkcd:{color_map[cd]}", linewidth=2, edgecolor="w", closed=True)
+
+        if len(face) > 10 and len(cds) == 1:
+            cd = cds[0]
+            count += 1
+            plt.fill(x, y, c=f"xkcd:{color_map[cd]}", linewidth=2, edgecolor="w", closed=True, label=cd)
 
     plt.axis("off")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=count, mode="expand", borderaxespad=0.)
     plt.savefig(f"./maps/{info[1]}.svg", dpi=100000)
     plt.close()
