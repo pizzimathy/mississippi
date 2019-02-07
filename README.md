@@ -1,6 +1,8 @@
 # Mississippi
 A short set of scripts that make pretty maps of Mississippi.
 
+![Twelve multicolor maps of Mississippi.](many-mississippis.png)
+
 ## Installation
 Clone this repository, then just run `$ make`. Everything will be set up for you,
 so you'll be all set to use the code right away.
